@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Users management</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body class="bg-dark">
+        <header class="border-bottom bg-dark p-3">
+            <div class="d-flex justify-content-between">
+                <span class="text-white fs-3">Users</span>
+                <div class="btn-group d-grid gap-2 d-md-flex justify-content-md-end">
+                    <button onclick="block_users();" type="button" class="btn btn-outline-light shadow-none">Block</button>
+                    <button onclick="unbclock_users();" type="button" class="btn btn-outline-light shadow-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-unlock" viewBox="0 0 16 16">
+                            <path d="M11 1a2 2 0 0 0-2 2v4a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h5V3a3 3 0 0 1 6 0v4a.5.5 0 0 1-1 0V3a2 2 0 0 0-2-2zM3 8a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1H3z"/>
+                        </svg>
+                    </button>
+                    <button onclick="delete_users();" type="button" class="btn btn-outline-light shadow-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                        </svg>
+                    </button>
+                    <script>
+                        function get_activ_checkBoxes(){
+                            var checkboxes = document.getElementsByClassName('one-checkbox');
+                            var ids_list = [];
+                            for (var i in checkboxes){
+                                if (checkboxes[i].checked){ids_list.push(checkboxes[i].id);}
+                            }
+                            return ids_list;
+                        }
+                        
+                        function constr_get (ids, get){
+                            for (i in ids){
+                                get = get + "ids[]=" + ids[i] + "&";
+                            }
+                            window.location = get;
+                        }
+
+                        function block_users(){
+                            var ids = get_activ_checkBoxes();
+                            var get = "/block/?";
+                            constr_get(ids, get);
+                        }
+
+                        function unbclock_users(){
+                            var ids = get_activ_checkBoxes();
+                            var get = "/unblock/?";
+                            constr_get(ids, get);
+                        }
+
+                        function delete_users(){
+                            var ids = get_activ_checkBoxes();
+                            var get = "/delete/?";
+                            constr_get(ids, get);
+                        }
+                    </script>
+                </div>
+            </div>
+        </header>
+        <table class="table table-dark table-striped text-center">
+            <thead>
+              <tr>
+                <th scope="col">
+                    <div class="form-check bg-dark">
+                        <input class="form-check-input" type="checkbox" id="main_checkBox" onclick="main_checkBox();">
+                        <script>
+                            function setMainCheckBox(){
+                                if (document.getElementById('main_checkBox').checked){
+                                    document.getElementById('main_checkBox').checked = false;
+                                }
+                            }
+
+                            function setCheckBoxes(value){
+                                var all_checkBoxes = document.getElementsByClassName("one-checkbox");
+                                    for (var i=0; i<all_checkBoxes.length; i++) {
+                                        all_checkBoxes[i].checked = value;
+                                    }
+                            }
+
+                            function main_checkBox() {
+                                if (document.getElementById('main_checkBox').checked){
+                                    setCheckBoxes(true);
+                                } else {
+                                    setCheckBoxes(false);
+                                }
+                            }
+                        </script>
+                    </div>
+                </th>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">E-mail</th>
+                <th scope="col">Registration</th>
+                <th scope="col">Last login</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each users}}
+                <tr>
+                    <th scope="col">
+                        <div class="form-check">
+                            <input onclick="setMainCheckBox();" class="one-checkbox form-check-input" type="checkbox" value="" id="{{this.id}}">
+                        </div>
+                    </th>
+                    <th scope="row">{{this.id}}</th>
+                    <td>{{this.name}}</td>
+                    <td>{{this.email}}</td>
+                    <td>{{this.[DATE_FORMAT(reg, "%m-%d-%Y")]}}</td>
+                    <td>{{this.[DATE_FORMAT(login, "%m-%d-%Y")]}}</td>
+                    <td>
+                        {{#if this.status}}
+                            OK
+                        {{else}}
+                            BLOCK
+                        {{/if}}
+                    </td>
+                </tr>
+              {{/each}}
+            </tbody>
+          </table>
+          <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>

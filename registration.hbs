@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Registration</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    </head>
+    <body class="bg-dark">
+        {{#if error_email}}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>This email is already in use</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {{/if}}
+        {{#if error_password}}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Passwords don't match</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {{/if}}
+        {{#if error_entry}}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>One or more fields are not filled in</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {{/if}}
+        <div class="position-absolute top-50 start-50 translate-middle text-white">
+            <form method="post">
+                <div class="text-center mb-3 pb-1 fs-3 border-bottom">Registration</div>
+                <div class="mb-3">
+                    <label for="Name" class="form-label">Name</label>
+                    <input type="name" name="name" class="form-control" id="Name">
+                </div>
+                <div class="mb-3">
+                  <label for="Email" class="form-label">Email address</label>
+                  <input type="email" name="email" class="form-control" id="Email">
+                </div>
+                <div class="mb-3">
+                  <label for="Password" class="form-label">Password</label>
+                  <input type="password" name="password" class="form-control" id="Password">
+                </div>
+                <div class="mb-3">
+                    <label for="Repeat_Password" class="form-label">Repeat password</label>
+                    <input type="password" name="r_password" class="form-control" id="Repeat_Password">
+                </div>
+                <div class="btn-group pt-2">
+                    <button onclick='window.location = "/autorization";' type="button" class="btn btn-outline-light fs-5 shadow-none">Authorization</button>
+                    <button type="submit" class="btn btn-outline-light fs-5 shadow-none">Registration</button>
+                </div>
+              </form>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>
